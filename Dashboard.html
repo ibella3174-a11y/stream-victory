@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stream Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #fcf9f2;
+      --card-dark: #1e3a34;
+      --card-gold: #c5a363;
+      --card-blue: #b4c6d0;
+      --text-main: #0b1a16;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding-bottom: 110px;
+    }
+
+    .container { padding: 20px; max-width: 500px; margin: 0 auto; }
+
+    /* HEADER */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+    .stream-logo { height: 35px; width: auto; }
+    .support-icon {
+      width: 45px; height: 45px; background: white;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer;
+    }
+    .support-icon i { color: var(--card-dark); font-size: 22px; }
+
+    /* PROFILE SECTION */
+    .dashboard-profile {
+      background: white; padding: 18px; border-radius: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04); margin-bottom: 20px;
+    }
+    .welcome-msg h2 { margin: 0; font-size: 16px; color: #777; font-weight: 500; }
+    .welcome-msg p { margin: 2px 0 0; font-size: 20px; font-weight: 700; }
+    .user-meta { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+    .avatar { width: 50px; height: 50px; border-radius: 50%; }
+    .status-inactive {
+      background: #ffeded; color: #d32f2f; font-size: 10px; padding: 3px 10px;
+      border-radius: 20px; font-weight: 800; cursor: pointer; border: 1px solid #ffcdd2;
+    }
+
+    /* WALLET STACK */
+    .wallet-stack { position: relative; height: 320px; margin-bottom: 10px; }
+    .wallet-card { position: absolute; width: 100%; border-radius: 25px; padding: 22px; box-sizing: border-box; transition: all 0.3s ease; }
+    .c-collab { background: var(--card-gold); top: 0; height: 160px; z-index: 1; color: #fff; }
+    .c-partner { background: var(--card-blue); top: 45px; height: 160px; z-index: 2; color: #fff; }
+    .c-main { 
+      background: var(--card-dark); top: 95px; height: 200px; z-index: 3; color: #fff;
+      box-shadow: 0 15px 35px rgba(30, 58, 52, 0.3); display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .card-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+    .card-val { font-size: 20px; font-weight: bold; text-align: right; }
+    .main-balance-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+    .main-val { font-size: 32px; font-weight: bold; }
+    .eye-toggle { cursor: pointer; font-size: 22px; opacity: 0.7; padding: 5px; }
+
+    /* ACTIVATION ALERT */
+    .activation-alert { background: rgba(244, 166, 34, 0.1); padding: 15px; border: 1px dashed #f4a622; border-radius: 15px; text-align: center; margin-bottom: 25px; }
+    .alert-text { font-size: 13px; margin-bottom: 10px; color: #555; line-height: 1.4; }
+    .alert-btn { background: #f4a622; color: #0b1a16; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; }
+
+    /* QUICK ACTIONS */
+    .actions-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .action-item { background: white; padding: 15px 10px; border-radius: 15px; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+    .action-item i { font-size: 28px; color: #0a3d62; margin-bottom: 8px; }
+    .action-item p { margin: 0; font-size: 11px; font-weight: 600; }
+
+    /* MODALS & NAV */
+    .modal-bg { position: fixed; top: 0; left: 0; height: 100%; width: 100%; background: rgba(0,0,0,0.50); display: none; justify-content: center; align-items: center; backdrop-filter: blur(6px); z-index: 9999; }
+    .modal-box { background: #fff; width: 85%; max-width: 380px; padding: 20px; border-radius: 20px; }
+    .modal-box.fortune-style { background-color: #fdf59c; border-radius: 30px; text-align: center; padding: 30px 20px; position: relative; }
+    .fortune-style h3 { color: #5d140b; font-size: 26px; font-weight: 800; }
+    .activate-btn.fortune-btn { background-color: #a30e0e; color: #ffffff; border-radius: 25px; padding: 18px; font-size: 18px; font-weight: bold; border: none; width: 100%; cursor: pointer; margin-top: 15px; }
+    
+    .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #1e3a34; padding: 12px 0; display: flex; justify-content: space-around; z-index: 9000; }
+    .nav-item { color: white; font-size: 12px; text-decoration: none; text-align: center; }
+    .nav-item i { font-size: 22px; }
+    .nav-item.active { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 12px; }
+
+    /* LIVE NOTIFICATION */
+    .stream-notification { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) scale(0.8); width: 92%; max-width: 380px; background: #fff; border-radius: 15px; display: flex; align-items: center; padding: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 10001; opacity: 0; visibility: hidden; transition: all 0.4s ease; cursor: pointer; border: 1.5px solid #1e3a34; }
+    .stream-notification.show { opacity: 1; visibility: visible; transform: translateX(-50%) scale(1); }
+    .live-tag { position: absolute; top: -10px; left: 20px; background: #ff0000; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 5px; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <img src="logo.png" alt="Stream Logo" class="stream-logo">
+    <div class="support-icon" onclick="openSupportChat()">
+      <i class="fa-solid fa-headset"></i>
+    </div>
+  </div>
+
+  <div class="dashboard-profile">
+    <div class="welcome-msg">
+      <h2 id="greeting">Good Morning</h2>
+      <p id="user-display-name">Rapheal</p>
+    </div>
+    <div class="user-meta">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="avatar">
+      <span class="status-inactive" onclick="openModal()">Inactive</span>
+    </div>
+  </div>
+
+  <div class="wallet-stack">
+    <div class="wallet-card c-collab">
+      <span class="card-title">Collab Earnings</span>
+      <span class="card-val balance-text" data-value="₦3,000">₦3,000</span>
+    </div>
+    <div class="wallet-card c-partner">
+      <span class="card-title">Partner Earnings</span>
+      <span class="card-val balance-text" data-value="₦4,000">₦4,000</span>
+    </div>
+    <div class="wallet-card c-main">
+      <span class="card-title">Total Royalties</span>
+      <div class="main-balance-row">
+        <span class="main-val balance-text" data-value="₦12,000">₦12,000</span>
+        <i class="fa-regular fa-eye eye-toggle" id="toggleEye"></i>
+      </div>
+    </div>
+  </div>
+
+  <div class="activation-alert">
+    <p class="alert-text">Your account is currently inactive. Activate your account to unlock all features and start your journey with Stream Africa.</p>
+    <button class="alert-btn" onclick="openModal()">Click here to activate your account →</button>
+  </div>
+
+  <div class="actions-grid">
+    <div class="action-item" onclick="openModal()"><i class="fa-solid fa-star"></i><p>Wish Hub</p></div>
+    <div class="action-item" onclick="openModal()"><i class="fa-solid fa-store"></i><p>Bazaar</p></div>
+    <div class="action-item" onclick="openModal()"><i class="fa-solid fa-hand-point-up"></i><p>Earn</p></div>
+    <div class="action-item" onclick="openModal()"><i class="fa-solid fa-video"></i><p>Video</p></div>
+    <div class="action-item" onclick="openModal()"><i class="fa-solid fa-microphone"></i><p>Audio</p></div>
+    <div class="action-item" onclick="openModal()"><i class="fa-solid fa-file-arrow-down"></i><p>Files</p></div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="#" class="nav-item"><i class="fa-solid fa-house"></i><br>Home</a>
+  <a href="#" class="nav-item" onclick="openHistory()"><i class="fa-solid fa-clock-rotate-left"></i><br>History</a>
+  <a href="#" class="nav-item"><i class="fa-solid fa-graduation-cap"></i><br>Skill Up</a>
+  <a href="#" class="nav-item active"><i class="fa-solid fa-user"></i><br>Profile</a>
+</div>
+
+<div id="activationModal" class="modal-bg">
+  <div class="modal-box fortune-style">
+    <span class="close-btn" onclick="closeModal()" style="position:absolute; top:15px; right:20px; color:#5d140b; cursor:pointer; font-size:20px;">✕</span>
+    <i class="fa-solid fa-bell" style="font-size:32px; color:#5d140b;"></i>
+    <h3>Notification</h3>
+    <p style="color:#1a1a1a; font-weight:500; font-size:17px; margin:20px 0;">Hello! You’re yet to activate your Stream account. Please proceed to activate your account to access your bonus and other features.</p>
+    <button class="activate-btn fortune-btn" onclick="window.location.href='activation.html'">Click Here To Activate Account</button>
+  </div>
+</div>
+
+<div id="historyModal" class="modal-bg">
+  <div class="modal-box" style="background: #fff; width: 85%; border-radius: 20px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:10px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <i class="fa-solid fa-clock-rotate-left" style="font-size:24px; color: #1e3a34;"></i>
+        <h3 style="margin:0; color: #1e3a34;">Recent Activity</h3>
+      </div>
+      <span onclick="closeHistory()" style="cursor:pointer; font-size:20px; font-weight:bold;">✕</span>
+    </div>
+    <div style="margin-top:15px;">
+      <div style="padding:12px 0; border-bottom:1px solid #ddd; display:flex; gap:10px; align-items:flex-start;">
+        <i class="fa-solid fa-user-check" style="font-size:20px; color: #1e3a34;"></i>
+        <div><strong style="color: black;">Account Registration</strong><br><small style="color: black;">You successfully registered</small></div>
+      </div>
+      <div style="padding:12px 0; border-bottom:1px solid #ddd; display:flex; gap:10px; align-items:flex-start;">
+        <i class="fa-solid fa-gift" style="font-size:20px; color:#1e3a34;"></i>
+        <div><strong style="color: black;">Welcome Bonus</strong><br><small style="color: black;">You received ₦12,000 Stream Cashback</small></div>
+      </div>
+      <div style="padding:12px 0; display:flex; gap:10px; align-items:flex-start;">
+        <i class="fa-solid fa-lock" style="font-size:20px; color:#1e3a34;"></i>
+        <div><strong style="color: black;">Activation Pending</strong><br><small style="color: #1e3a34;">Complete your payment</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dynamicNotif" class="stream-notification" onclick="openModal()">
+  <div class="live-tag">LIVE</div>
+  <div id="notifMedia" style="width:50px; height:50px; border-radius:50%; overflow:hidden; margin-right:12px; border:2px solid #f4a622; flex-shrink:0;"></div>
+  <div style="flex-grow:1;">
+    <strong id="notifName" style="color:#0b1a16; font-size:15px;">Peller</strong>
+    <p id="notifText" style="color:#444; font-size:12px; margin:0;">Loading...</p>
+  </div>
+  <div style="background:#1e3a34; color:white; padding:6px 15px; border-radius:8px; font-size:12px; font-weight:bold;">JOIN</div>
+</div>
+
+<script>
+  // Balance Visibility Toggle
+  const toggleEye = document.getElementById('toggleEye');
+  const balances = document.querySelectorAll('.balance-text');
+  let isHidden = false;
+  toggleEye.addEventListener('click', function() {
+    isHidden = !isHidden;
+    balances.forEach(el => { el.innerText = isHidden ? '****' : el.getAttribute('data-value'); });
+    toggleEye.classList.toggle('fa-eye');
+    toggleEye.classList.toggle('fa-eye-slash');
+  });
+
+  // Modals & Chat
+  function openModal() { document.getElementById("activationModal").style.display = "flex"; }
+  function closeModal() { document.getElementById("activationModal").style.display = "none"; }
+  function openHistory() { document.getElementById("historyModal").style.display = "flex"; }
+  function closeHistory() { document.getElementById("historyModal").style.display = "none"; }
+  function openSupportChat() { window.location.href = "https://t.me/Coachyhubee?text=Hi%20STREAM_AFRICA"; }
+
+  // Greeting & Name
+  function updateGreeting() {
+    const hour = new Date().getHours();
+    const greetEl = document.getElementById("greeting");
+    const name = localStorage.getItem("userFullName") || "Rapheal";
+    document.getElementById("user-display-name").innerText = name;
+    if (hour < 12) greetEl.innerText = "Good Morning";
+    else if (hour < 18) greetEl.innerText = "Good Afternoon";
+    else greetEl.innerText = "Good Evening";
+  }
+  updateGreeting();
+
+
+const name = localStorage.getItem("userFullName") || "Streamer";
+document.getElementById("user-display-name").innerText = name;
+
+  const influencers = [
+    { name: "Peller", img: "image.jpg", phrases: ["Join Peller live on Kick earn ₦15,000", "Peller is live now! Join him and earn big", "Don't miss Peller on Kick - ₦15,000 waiting", "Watch Peller now and claim your stream reward", "Peller is breaking records!", "Earn ₦15,000 instantly watching Peller live"] },
+    { name: "Carter Efe", img: "cater.jpg", phrases: ["Join Carter Efe on Twitch and earn also!!", "Carter Efe is live now! Join him", "Watch Carter Efe live and boost your earnings", "Carter Efe collaboration is active!", "Join the Machala king on Twitch right now"] }
+  ];
+  let curIdx = 0;
+  function showNextNotification() {
+    const notifEl = document.getElementById("dynamicNotif");
+    const person = influencers[curIdx];
+    const phrase = person.phrases[Math.floor(Math.random() * person.phrases.length)];
+    document.getElementById("notifName").innerText = person.name;
+    document.getElementById("notifText").innerText = phrase;
+    document.getElementById("notifMedia").innerHTML = `<img src="${person.img}" style="width:100%; height:100%; object-fit:cover;">`;
+    notifEl.classList.add("show");
+    setTimeout(() => { notifEl.classList.remove("show"); curIdx = (curIdx + 1) % influencers.length; }, 6000);
+  }
+  setTimeout(showNextNotification, 2000);
+  setInterval(showNextNotification, 14000);
+</script>
+</body>
+</html>
