@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stream Registration</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root{
+  --bg: #061a18;
+  --card: rgba(10, 40, 38, 0.75);
+  --accent: #4fd1c5;         
+  --accent-dark: #2fb8a6; 
+  --glow: rgba(79, 209, 197, 0.35);
+  --text: #ecfffb;
+  --muted: #9fcfc6;
+  --input-bg: rgba(255,255,255,0.04);
+}
+    body {
+  margin: 0;
+  padding: 24px;
+  font-family: 'Poppins', sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(79,209,197,0.15), transparent 60%),
+    linear-gradient(135deg, #041412, #0b2f2a);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text);
+}
+
+    .container {
+      background: rgba(0,0,0,0.55);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 440px;
+      width: 100%;
+      backdrop-filter: blur(8px);
+    }
+
+    .logo { width: 120px; }
+    .brand-name { color: var(--accent); font-weight: 800; font-size: 1.25rem; }
+
+    label { font-weight: 600; margin-bottom: 6px; display: block; }
+
+    .input-group { margin-bottom: 1rem; position: relative; }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .toggle-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 6px;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: #ff6d6d;
+      font-size: 0.85rem;
+      display: none;
+      margin-top: 4px;
+    }
+
+    button.primary {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(90deg,var(--accent),var(--accent-dark));
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .note {
+      text-align:center;
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .note a:hover {
+  text-decoration: underline;
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <img src="logo.png" class="logo" />
+
+    <div class="brand-name"></div>
+
+    <h2>Create Your Account</h2>
+
+    <form id="registrationForm">
+
+      <label>Full Name</label>
+      <div class="input-group">
+        <input type="text" id="name" placeholder="Your full name">
+        <div class="error-message" id="errName">Enter your full name</div>
+      </div>
+
+      <label>Username</label>
+      <div class="input-group">
+        <input type="text" id="username" placeholder="Choose a username">
+        <div class="error-message" id="errUser">Enter a username</div>
+      </div>
+
+      <label>Phone Number</label>
+      <div class="input-group">
+        <input type="text" id="phone" placeholder="08012345678">
+        <div class="error-message" id="errPhone">Enter a valid phone number</div>
+      </div>
+
+      <label>Email Address</label>
+      <div class="input-group">
+        <input type="email" id="email" placeholder="you@email.com">
+        <div class="error-message" id="errEmail">Enter a valid email</div>
+      </div>
+
+      <label>Password</label>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Create a password">
+        <div class="toggle-icon" id="togglePass"><i class="fa-solid fa-eye-slash"></i></div>
+        <div class="error-message" id="errPass">Password must be 6+ characters</div>
+      </div>
+      
+      <label for="plan">Select Plan</label>
+<div class="input-group">
+  <select id="plan" style="width: 100%;
+      padding: 0.75rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 1rem;
+    ">
+    <option value="12000">Stream Premium  – ₦12,000</option>
+  </select>
+</div>
+
+<div class="plan" style="
+    background: linear-gradient(180deg, rgba(71,163,231,0.03), rgba(71,163,231,0.01));
+    border-radius: 10px;
+    padding: 0.9rem;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(71,163,231,0.06);
+">
+  <h3 style="margin:0; color:#fff; font-size:1rem;">Premium Plan – ₦12,000</h3>
+  <p style="margin:0.5rem 0 0; font-size:0.9rem; color:var(--muted);">
+    <del>₦15,000</del>
+    <span style="color:#47a3e7; font-weight:600;"> &nbsp; Save ₦3,000</span>
+  </p>
+</div>
+
+      <button type="submit" class="primary">Sign Up</button>
+
+    </form>
+                                
+    <div class="note">Secure registration | Secure payment</div>
+  
+<div class="note" style="margin-top: 1.2rem;">
+  Already have an account?
+  <a href="login.html" style="
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;">
+    Login
+  </a>
+</div>
+  </div>
+<script>
+  // password toggle
+  document.getElementById("togglePass").onclick = function() {
+    const input = document.getElementById("password");
+    const icon = this.querySelector("i");
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace("fa-eye-slash","fa-eye");
+    } else {
+      input.type = "password";
+      icon.classList.replace("fa-eye","fa-eye-slash");
+    }
+  };
+  document.getElementById("registrationForm").onsubmit = function(e) {
+    e.preventDefault();
+
+    let name = document.getElementById("name").value.trim();
+    let user = document.getElementById("username").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let pass = document.getElementById("password").value.trim();
+
+    let valid = true;
+
+    if (!name) { document.getElementById("errName").style.display = "block"; valid=false; }
+    else document.getElementById("errName").style.display = "none";
+
+    if (!user) { document.getElementById("errUser").style.display = "block"; valid=false; }
+    else document.getElementById("errUser").style.display = "none";
+
+    if (!phone || phone.length < 10) { document.getElementById("errPhone").style.display = "block"; valid=false; }
+    else document.getElementById("errPhone").style.display = "none";
+
+    if (!email.includes("@")) { document.getElementById("errEmail").style.display = "block"; valid=false; }
+    else document.getElementById("errEmail").style.display = "none";
+
+    if (pass.length < 6) { document.getElementById("errPass").style.display = "block"; valid=false; }
+    else document.getElementById("errPass").style.display = "none";
+
+if (!valid) return;
+localStorage.setItem("userFullName", name);
+window.location.href = "Dashboard.html";
+  }
+  let plan = document.getElementById("plan").value;
+</script>
+
+</body>
+
+</html>
